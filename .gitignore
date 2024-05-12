@@ -1,0 +1,6 @@
+target/
+bin/
+.vscode/
+*.iml
+*.log
+*.exe

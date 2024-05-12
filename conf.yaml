@@ -1,0 +1,21 @@
+server:
+  port: 8000
+
+raft:
+  storeDir: D:/demo/k1
+  peerId: 1000
+  address: 127.0.0.1
+
+monitor:
+  port: 10001
+  path: /metrics
+
+jwt:
+  name: user_session
+  expire: 86400
+  key: "default_Secret_k8s&1"
+
+admin:
+  user: admin
+  password: cfgHubAdmin123
+  email: admin@test.com
