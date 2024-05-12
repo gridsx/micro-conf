@@ -1,6 +1,6 @@
 # micro-conf
 
-![logo](./docs/log.png)
+![logo](docs/imgs/logo.png)
 
 去中心化的配置平台和注册中心
 > 底层使用 raft协议，API与存储统一服务， 部署和维护极为简单
@@ -19,6 +19,23 @@
 4. 如果想给应用增加其他配置，那么需要在界面上另外添加配置的选项
 5. 管理员可以创建普通用户，也可以给普通用户某个App Owner 权限或者 Dev权限， 有了权限， 就可以去对这个App的一些配置进行修改和发布
 
+
+## user admin 管理后台界面
+
+微配置 管理后台
+![home](./docs/imgs/home.png)
+
+微配置应用详情页面
+![detail](./docs/imgs/detail.png)
+
+
+## how to deploy.  如何部署
+
+
+## clients 客户端
+
+目前计划支持Java 和Golang的客户端，其他语言的客户端暂时不支持
+如果开发者有兴趣， 欢迎编写其他语言的客户端，并提交. 可以联系我，直接建立对应的仓库。
 
 ## 附录：各模块 API 列表
 
