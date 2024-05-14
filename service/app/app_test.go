@@ -12,5 +12,4 @@ func TestExtract(t *testing.T) {
 	const nsStr2 = `"app.ns.appId.groupId.default.props.10.232.123.98:23"`
 	info2 := extractNamespaceInfo(nsStr2)
 	assert.True(t, info2 != nil)
-
 }

@@ -102,29 +102,16 @@ func (c *Client) Write() {
 				}
 				return
 			}
-
 			w, err := c.conn.NextWriter(websocket.TextMessage)
 			if err != nil {
 				logger.Warnf("websocket write message next writer err: %s\n", err.Error())
 				return
 			}
-
 			_, writeErr := w.Write(message)
 			if writeErr != nil {
 				logger.Warnf("websocket write message error: %s\n", err.Error())
 				return
 			}
-
-			// Add queued chat messages to the current websocket message.
-			n := len(c.send)
-			for i := 0; i < n; i++ {
-				_, err := w.Write(<-c.send)
-				if err != nil {
-					logger.Warnf("websocket write message error: %s\n", err.Error())
-					return
-				}
-			}
-
 			if err := w.Close(); err != nil {
 				logger.Warnf("websocket write message close error: %s\n", err.Error())
 				return
@@ -140,7 +127,6 @@ func (c *Client) Write() {
 			}
 		}
 	}
-
 }
 
 func (c *Client) Close() {

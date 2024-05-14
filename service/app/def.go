@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"regexp"
+	"strings"
 	"time"
 
 	jsoniter "github.com/json-iterator/go"
@@ -64,6 +65,19 @@ func (i *AppInfo) String() string {
 
 type EventType string
 
+func (t *EventType) Byte() byte {
+	if strings.EqualFold(string(*t), string(ConfigChange)) {
+		return 1
+	}
+	if strings.EqualFold(string(*t), string(InfoChange)) {
+		return 2
+	}
+	if strings.EqualFold(string(*t), string(SvcInfoChange)) {
+		return 3
+	}
+	return 0
+}
+
 const (
 	ConfigChange  = EventType("cfg")
 	InfoChange    = EventType("info")
@@ -76,6 +90,7 @@ type AppEvent struct {
 }
 
 func (e *AppEvent) String() string {
-	d, _ := jsoniter.Marshal(e)
+	d, _ := jsoniter.Marshal(e.Content)
+	d = append(d, e.Type.Byte())
 	return string(d)
 }

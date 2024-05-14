@@ -22,9 +22,10 @@ var (
 	}
 )
 
-// ServeWs handles websocket requests from the peer.
+//	handles websocket requests from the peer.
+//
 // 如果重复发送，那么得主动断开以前的连接，否则连接会过多
-func ServeWs(ctx iris.Context) {
+func serveWs(ctx iris.Context) {
 	key := ctx.URLParam("key")
 	existClient := GetClient(key)
 	if existClient != nil {
@@ -39,4 +40,8 @@ func ServeWs(ctx iris.Context) {
 	registerClient(client)
 	go client.Read()
 	go client.Write()
+}
+
+func RouteWs(app *iris.Application) {
+	app.Get("/api/ws", serveWs) // 需要token
 }

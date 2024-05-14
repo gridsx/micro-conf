@@ -15,6 +15,11 @@ import (
 
 // RouteApp 以 /api/app 开头
 // 暂时不支持删除APP， 仅有管理员可以管理
+
+func RouteAPI(app *iris.Application) {
+	app.Post("/api/app/reg", appStart)
+}
+
 func RouteApp(party iris.Party) {
 
 	// 这段必须要放在前面，否则都需要admin权限了
@@ -26,7 +31,6 @@ func RouteApp(party iris.Party) {
 	// 角色管理
 	party.Post("/{app:string}/role", func(ctx iris.Context) { RequirePermission(ctx, Owner) }, manageRole)
 	// 应用启动的时候注册app到配置中心的接口， RequireToken
-	party.Post("/reg", appStart)
 
 	party.Use(RequireAdmin)
 	party.Get("/list", RequireAdmin, allAppList)                                                    // 获取APP列表

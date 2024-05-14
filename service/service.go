@@ -4,6 +4,7 @@ import (
 	"github.com/gridsx/micro-conf/service/app"
 	"github.com/gridsx/micro-conf/service/base"
 	"github.com/gridsx/micro-conf/service/cfg"
+	"github.com/gridsx/micro-conf/service/conn"
 	"github.com/gridsx/micro-conf/service/svc"
 	"github.com/kataras/iris/v12"
 )
@@ -16,7 +17,9 @@ func RegisterAPI(a *iris.Application) {
 	cfg.RoutConfig(a.Party("/api/cfg"))
 }
 
-func RouteInner(app *iris.Application) {
-	base.RouteInner(app)
-	cfg.RouteInner(app)
+func RouteInner(a *iris.Application) {
+	base.RouteInner(a) // 需要校验来源IP是否是集群内部
+	cfg.RouteInner(a)  // 需要校验来源IP是否是集群内部
+	app.RouteAPI(a)    // 需要token
+	conn.RouteWs(a)    //需要token
 }

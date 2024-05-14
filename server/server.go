@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/gridsx/micro-conf/service"
-	"github.com/gridsx/micro-conf/service/conn"
 	"github.com/gridsx/micro-conf/user"
 	"github.com/kataras/iris/v12"
 	"github.com/winjeg/go-commons/log"
@@ -13,8 +12,6 @@ import (
 
 func Serve(port int) {
 	app := iris.New()
-
-	servWebsocket(app)
 
 	app.Get("/ping", func(ctx iris.Context) { ctx.Text("pong") })
 	app.UseRouter(middleware.NewRequestLogger(nil))
@@ -30,8 +27,4 @@ func Serve(port int) {
 		log.GetLogger(nil).Errorln("listen port error: %s\n" + err.Error())
 		return
 	}
-}
-
-func servWebsocket(app *iris.Application) {
-	app.Get("/ws", conn.ServeWs)
 }

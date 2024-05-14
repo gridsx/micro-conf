@@ -30,7 +30,7 @@ type ConfigChangeRequest struct {
 	Diff  *NamespaceDiff `json:"diff,omitempty"`
 }
 
-// AcceptConfigChange TODO 只允许集群内节点之间相互调用
+// AcceptConfigChange  只允许集群内节点之间相互调用
 func acceptConfigChange(ctx iris.Context) {
 	req := new(ConfigChangeRequest)
 	if err := ctx.ReadJSON(req); err != nil {
