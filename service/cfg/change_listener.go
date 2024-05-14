@@ -125,7 +125,7 @@ func doPush(request *ConfigChangeRequest) {
 			if len(diff.Added) > 0 {
 				for k, v := range diff.Added {
 					event := &ConfigChangeEvent{
-						Namespace: diff.Namespace,
+						Namespace: fmt.Sprintf("%s.%s.%s", request.AppId, request.Group, diff.Namespace),
 						Key:       k,
 						Type:      ConfigAdd,
 						Current:   v,
@@ -140,7 +140,7 @@ func doPush(request *ConfigChangeRequest) {
 			if len(diff.Removed) > 0 {
 				for k, v := range diff.Removed {
 					event := &ConfigChangeEvent{
-						Namespace: diff.Namespace,
+						Namespace: fmt.Sprintf("%s.%s.%s", request.AppId, request.Group, diff.Namespace),
 						Key:       k,
 						Type:      ConfigRemove,
 						Current:   v,
@@ -156,7 +156,7 @@ func doPush(request *ConfigChangeRequest) {
 			if len(diff.Changed) > 0 {
 				for k, v := range diff.Changed {
 					event := &ConfigChangeEvent{
-						Namespace: diff.Namespace,
+						Namespace: fmt.Sprintf("%s.%s.%s", request.AppId, request.Group, diff.Namespace),
 						Key:       k,
 						Type:      ConfigChange,
 						Current:   v.Right,

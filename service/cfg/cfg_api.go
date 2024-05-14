@@ -2,6 +2,7 @@ package cfg
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/gridsx/micro-conf/service/app"
 	"github.com/kataras/iris/v12"
@@ -33,25 +34,55 @@ func (r *NamespaceClientRequest) Keys() []string {
 }
 
 func appConfig(ctx iris.Context) {
-	appId := ctx.Params().Get("appId")
 	req := new(NamespaceClientRequest)
-	if err := ctx.ReadJSON(req); err != nil || len(appId) == 0 {
+	if err := ctx.ReadJSON(req); err != nil {
 		ret.BadRequest(ctx)
 		return
 	}
-	req.AppId = appId
 	nsWithContent := queryNamespaceContent(req.Keys())
 	ret.Ok(ctx, nsWithContent)
 }
 
-func queryNamespaceContent(keys []string) map[string]string {
-	result := make(map[string]string, defaultSize)
+// 这里要求一个应用下面的namespace不能重名
+func queryNamespaceContent(keys []string) map[string]map[string]string {
+	result := make(map[string]map[string]string, defaultSize)
 	for _, key := range keys {
 		content, err := rs.Get(key)
 		if err != nil {
 			continue
 		}
-		result[key] = content
+		idx := strings.LastIndex(key, ".")
+		if idx < 0 {
+			continue
+		}
+
+		nsIdx := strings.LastIndex(key[:idx], ".")
+		if nsIdx < 0 {
+			continue
+		}
+		namespace := key[nsIdx+1:]
+
+		groupIdx := strings.LastIndex(key[:nsIdx], ".")
+		if groupIdx < 0 {
+			continue
+		}
+		group := key[groupIdx+1 : nsIdx]
+
+		appIdx := strings.LastIndex(key[:groupIdx], ".")
+		if appIdx < 0 {
+			continue
+		}
+		app := key[appIdx+1 : groupIdx]
+		format := key[idx+1:]
+		nsKey := fmt.Sprintf("%s.%s.%s", app, group, namespace)
+		switch format {
+		case typeYaml:
+			result[nsKey], _ = YamlToFlatMap(content)
+		case typeProps:
+			result[nsKey], _ = PropertiesToMap(content)
+		case typeJson:
+			result[nsKey], _ = JsonToFlatMap(content)
+		}
 	}
 	return result
 }

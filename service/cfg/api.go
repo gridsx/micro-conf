@@ -7,26 +7,14 @@ import (
 
 func RouteInner(app *iris.Application) {
 	app.Post("/api/cfg/listen", acceptConfigChange)
+	app.Post("/api/cfg/app", appConfig)
 }
 
 // RoutConfig /api/cfg/
 func RoutConfig(party iris.Party) {
-
-	// client端连接的， 统一走api方式
-	appParty := party.Party("/client")
-	routeClientAPI(appParty)
-
 	// 管理后台的接口，则走权限控制模式
 	adminParty := party.Party("/admin")
 	routeAdminAPI(adminParty)
-}
-
-func routeClientAPI(party iris.Party) {
-	party.Use(app.RequireToken)
-	// 启动的时候获取app设置的对应配置信息
-	party.Post("/app/{:appId}", appConfig)
-	// websocket 保持心跳的不在此处, 心跳始终都会有， 不管是注册不注册被别人调用的服务
-	// 配置更新推送也是使用websocket 进行推送， 用同一条连接
 }
 
 func routeAdminAPI(party iris.Party) {
