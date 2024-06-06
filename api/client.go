@@ -93,9 +93,9 @@ func (c *Client) requestWithHeader(method, url, body string, headers ...http.Hea
 	}
 	signResult := Sign(content, secret)
 	if len(getPairsFromUrl(url)) == 0 {
-		url += fmt.Sprintf("?sign=%s&time=%d&app_key=%s", signResult, timeMillis, c.Key)
+		url += fmt.Sprintf("?sign=%s&time=%d&app=%s", signResult, timeMillis, c.Key)
 	} else {
-		url += fmt.Sprintf("&sign=%s&time=%d&app_key=%s", signResult, timeMillis, c.Key)
+		url += fmt.Sprintf("&sign=%s&time=%d&app=%s", signResult, timeMillis, c.Key)
 	}
 	req, err := http.NewRequest(method, url, strings.NewReader(body))
 	if err != nil {

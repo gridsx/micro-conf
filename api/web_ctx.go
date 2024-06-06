@@ -14,7 +14,7 @@ const (
 	defaultExpireTime = 60000
 	signParam         = "sign"
 	timeParam         = "time"
-	appKey            = "app_key"
+	appKey            = "app"
 )
 
 var signHeader = false

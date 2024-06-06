@@ -32,10 +32,10 @@ func TestBuildParams(t *testing.T) {
 		Value: fmt.Sprintf("%d", time),
 	})
 	pairs = append(pairs, KvPair{
-		Key:   "app_key",
+		Key:   "app",
 		Value: "iepheechahNg9voh",
 	})
 	content := buildParams(pairs)
-	url := "?time=" + fmt.Sprintf("%d", time) + "&app_key=iepheechahNg9voh&sign=" + Sign(content, signKey)
+	url := "?time=" + fmt.Sprintf("%d", time) + "&app=iepheechahNg9voh&sign=" + Sign(content, signKey)
 	fmt.Println(url)
 }

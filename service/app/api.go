@@ -17,7 +17,7 @@ import (
 // 暂时不支持删除APP， 仅有管理员可以管理
 
 func RouteAPI(app *iris.Application) {
-	app.Post("/api/app/reg", appStart)
+	app.Post("/api/app/reg", RequireToken, appStart)
 }
 
 func RouteApp(party iris.Party) {

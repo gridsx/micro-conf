@@ -2,6 +2,7 @@ package conn
 
 import (
 	"github.com/gorilla/websocket"
+	"github.com/gridsx/micro-conf/service/app"
 	"github.com/kataras/iris/v12"
 
 	"log"
@@ -42,6 +43,6 @@ func serveWs(ctx iris.Context) {
 	go client.Write()
 }
 
-func RouteWs(app *iris.Application) {
-	app.Get("/api/ws", serveWs) // 需要token
+func RouteWs(a *iris.Application) {
+	a.Get("/api/ws", app.RequireToken, serveWs) // 需要token
 }

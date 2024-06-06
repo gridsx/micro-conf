@@ -12,7 +12,6 @@ import (
 func RegisterAPI(a *iris.Application) {
 	base.RouteRaft(a.Party("/api/raft"))
 	base.RouteStore(a.Party("/api/store"))
-	svc.RouteSvc(a.Party("/api/svc"))
 	app.RouteApp(a.Party("/api/app"))
 	cfg.RoutConfig(a.Party("/api/cfg"))
 }
@@ -20,6 +19,8 @@ func RegisterAPI(a *iris.Application) {
 func RouteInner(a *iris.Application) {
 	base.RouteInner(a) // 需要校验来源IP是否是集群内部
 	cfg.RouteInner(a)  // 需要校验来源IP是否是集群内部
-	app.RouteAPI(a)    // 需要token
-	conn.RouteWs(a)    //需要token
+	// TODO 开启token校验
+	svc.RouteSvc(a.Party("/api/svc"))
+	app.RouteAPI(a) // 需要token
+	conn.RouteWs(a) //需要token
 }
