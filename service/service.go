@@ -17,9 +17,10 @@ func RegisterAPI(a *iris.Application) {
 }
 
 func RouteInner(a *iris.Application) {
+	// 这部分，应该由网络工程师配置白名单，不再单独实现了
 	base.RouteInner(a) // 需要校验来源IP是否是集群内部
 	cfg.RouteInner(a)  // 需要校验来源IP是否是集群内部
-	// TODO 开启token校验
+	// 一些通用注册的客户端用的API
 	svc.RouteSvc(a.Party("/api/svc"))
 	app.RouteAPI(a) // 需要token
 	conn.RouteWs(a) //需要token
